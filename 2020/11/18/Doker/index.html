@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>dubbo的架构思路 - Hexo</title>
+  <title>Doker - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -165,8 +165,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-10-21 15:44" pubdate>
-        2020年10月21日 下午
+      <time datetime="2020-11-18 14:52" pubdate>
+        2020年11月18日 下午
       </time>
     </span>
   
@@ -177,7 +177,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      0 字
+      873 字
     </span>
   
 
@@ -187,7 +187,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      10
        分钟
     </span>
   
@@ -217,10 +217,115 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">dubbo的架构思路</h1>
+            <h1 style="display: none">Doker</h1>
             
             <div class="markdown-body" id="post-body">
-              
+              <h3 id="1、简介"><a href="#1、简介" class="headerlink" title="1、简介"></a>1、简介</h3><p>Docker是一个开源的应用容器引擎；是一个轻量级容器技术； </p>
+<p>Docker支持将软件编译成一个镜像；然后在镜像中各种软件做好配置，将镜像发布出去，其他使用者可以直接使 </p>
+<p>用这个镜像； </p>
+<p>运行中的这个镜像称为容器，容器启动是非常快速的。 </p>
+<h3 id="2、核心概念"><a href="#2、核心概念" class="headerlink" title="2、核心概念"></a>2、核心概念</h3><p>docker主机(Host)：安装了Docker程序的机器（Docker直接安装在操作系统之上）； </p>
+<p>docker客户端(Client)：连接docker主机进行操作； </p>
+<p>docker仓库(Registry)：用来保存各种打包好的软件镜像； </p>
+<p>docker镜像(Images)：软件打包好的镜像；放在docker仓库中； </p>
+<p>docker容器(Container)：镜像启动后的实例称为一个容器；容器是独立运行的一个或一组应用</p>
+<p>使用Docker的步骤： </p>
+<p>1）、安装Docker </p>
+<p>2）、去Docker仓库找到这个软件对应的镜像； </p>
+<p>3）、使用Docker运行这个镜像，这个镜像就会生成一个Docker容器； </p>
+<p>4）、对容器的启动停止就是对软件的启动停止； </p>
+<h3 id="3、安装Docker"><a href="#3、安装Docker" class="headerlink" title="3、安装Docker"></a>3、安装Docker</h3><h4 id="1）、安装linux虚拟机"><a href="#1）、安装linux虚拟机" class="headerlink" title="1）、安装linux虚拟机"></a>1）、安装linux虚拟机</h4><p>1）、VMWare、VirtualBox（安装）； </p>
+<p>2）、导入虚拟机文件centos7-atguigu.ova； </p>
+<p>3）、双击启动linux虚拟机;使用 root/ 123456登陆 </p>
+<p>4）、使用客户端连接linux服务器进行命令操作； </p>
+<p>5）、设置虚拟机网络； </p>
+<p>桥接网络=选好网卡==接入网线； </p>
+<p>6）、设置好网络以后使用命令重启虚拟机的网络</p>
+<pre><code class="hljs routeros">service<span class="hljs-built_in"> network </span>restart</code></pre>
+
+<p>7）、查看linux的ip地址</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">ip addr</span></code></pre>
+
+<p>8）、使用客户端连接linux； </p>
+<h4 id="2）、在linux虚拟机上安装docker"><a href="#2）、在linux虚拟机上安装docker" class="headerlink" title="2）、在linux虚拟机上安装docker"></a>2）、在linux虚拟机上安装docker</h4><p>步骤： </p>
+<pre><code class="hljs angelscript"><span class="hljs-number">1</span>、检查内核版本，必须是<span class="hljs-number">3.10</span>及以上 
+uname ‐r
+<span class="hljs-number">2</span>、安装docker
+yum install docker
+<span class="hljs-number">3</span>、输入y确认安装 
+<span class="hljs-number">4</span>、启动docker
+[<span class="hljs-symbol">root@</span>localhost ~]# systemctl start docker 
+[<span class="hljs-symbol">root@</span>localhost ~]# docker ‐v 
+Docker version <span class="hljs-number">1.12</span><span class="hljs-number">.6</span>, build <span class="hljs-number">3e8</span>e77d/<span class="hljs-number">1.12</span><span class="hljs-number">.6</span> 
+<span class="hljs-number">5</span>、开机启动docker [<span class="hljs-symbol">root@</span>localhost ~]# systemctl enable docker
+Created symlink <span class="hljs-keyword">from</span> /etc/systemd/system/multi‐user.target.wants/docker.service to 
+/usr/lib/systemd/system/docker.service. 
+<span class="hljs-number">6</span>、停止docker 
+systemctl stop docker</code></pre>
+
+<h3 id="4、Docker常用命令-amp-操作"><a href="#4、Docker常用命令-amp-操作" class="headerlink" title="4、Docker常用命令&amp;操作"></a>4、Docker常用命令&amp;操作</h3><h4 id="1）、镜像操作"><a href="#1）、镜像操作" class="headerlink" title="1）、镜像操作"></a>1）、镜像操作</h4><table>
+<thead>
+<tr>
+<th>操作</th>
+<th align="left">说明</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>检索</td>
+<td align="left">docker search 关键字 eg：docker  serch redis</td>
+<td>我们经常去docker hub上检索镜像的详细信息，如镜 像的TAG。</td>
+</tr>
+<tr>
+<td>拉取</td>
+<td align="left">docker pull 镜像名:tag</td>
+<td>:tag是可选的，tag表示标签，多为软件的版本，默认 是latest</td>
+</tr>
+<tr>
+<td>列表</td>
+<td align="left">docker images</td>
+<td>查看所有本地镜像</td>
+</tr>
+<tr>
+<td>删除</td>
+<td align="left">docker rmi image-id</td>
+<td>删除指定的本地镜像</td>
+</tr>
+</tbody></table>
+<p><a target="_blank" rel="noopener" href="https://hub.docker.com/">https://hub.docker.com/</a></p>
+<h4 id="2）、容器操作"><a href="#2）、容器操作" class="headerlink" title="2）、容器操作"></a>2）、容器操作</h4><p>软件镜像（QQ安装程序）—-运行镜像—-产生一个容器（正在运行的软件，运行的QQ）； </p>
+<p>步骤： </p>
+<pre><code class="hljs angelscript"><span class="hljs-number">1</span>、搜索镜像 
+<span class="hljs-symbol">root@</span>localhost ~]# docker search tomcat 
+<span class="hljs-number">2</span>、拉取镜像 
+[<span class="hljs-symbol">root@</span>localhost ~]# docker pull tomcat 
+<span class="hljs-number">3</span>、根据镜像启动容器 
+docker run ‐‐name mytomcat ‐d tomcat:latest 
+<span class="hljs-number">4</span>、docker ps 
+查看运行中的容器 
+<span class="hljs-number">5</span>、 停止运行中的容器 
+docker stop 容器的id 
+<span class="hljs-number">6</span>、查看所有的容器 
+docker ps ‐a 
+<span class="hljs-number">7</span>、启动容器 
+docker start 容器id 
+<span class="hljs-number">8</span>、删除一个容器 
+docker rm 容器id 
+<span class="hljs-number">9</span>、启动一个做了端口映射的tomcat 
+[<span class="hljs-symbol">root@</span>localhost ~]# docker run ‐d ‐p <span class="hljs-number">8888</span>:<span class="hljs-number">8080</span> tomcat
+‐d：后台运行 
+‐p: 将主机的端口映射到容器的一个端口 主机端口:容器内部的端口 
+
+<span class="hljs-number">10</span>、为了演示简单关闭了linux的防火墙 
+service firewalld status ；查看防火墙状态 
+service firewalld stop：关闭防火墙 
+<span class="hljs-number">11</span>、查看容器的日志 docker logs container‐name/container‐id 
+
+更多命令参看 https:<span class="hljs-comment">//docs.docker.com/engine/reference/commandline/docker/ </span>
+可以参考每一个镜像的文档
+</code></pre>
+
+
             </div>
             <hr>
             <div>
@@ -236,15 +341,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/11/18/Doker/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Doker</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2020/10/21/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2/">
+                        <span class="hidden-mobile">dubbo的架构思路</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
@@ -384,7 +489,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "dubbo的架构思路&nbsp;",
+        "Doker&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
